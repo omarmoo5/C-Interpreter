@@ -38,9 +38,9 @@ void runFile(char *filename)
         infixToPost(format(RHS),i);
         float value = evaluate_postfix(i,root);
         root = insert(root,LHS,value);
+        lineNUM++;
         printf("Line#%ld:\tLHS[%s]=RHS[%s]\t",lineNUM,LHS,RHS);
         printf("%s=%.2f\n",LHS,value);
-        lineNUM++;
     }
     puts("");
     inOrder(root);
