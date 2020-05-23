@@ -1,39 +1,15 @@
 #include <stdio.h>
-#include <stdarg.h>
 #include <string.h>
+#include "helpers.h"
 #include "stack.h"
 #include "tree.h"
-
-void ERROR(long lineNUM, char *c, ...)
-{
-    fprintf( stderr, "ERROR:line:%ld>> ",lineNUM);
-    char *s;
-    va_list lst;
-    va_start(lst, c);
-    while(*c!='\0')
-    {
-        if(*c!='%')
-        {
-            fprintf( stderr, "%c",*c);
-            c++;
-            continue;
-        }
-        c++;
-        switch(*c)
-        {
-            case 's': fputs(va_arg(lst, char *), stderr); break;
-            case 'c': fprintf(stderr,"%c",(va_arg(lst, int))); break;
-        }
-        c++;
-    }
-}
 
 void runFile(char *filename)
 {
     FILE *f=fopen(filename, "r");
     if(!f){perror("File doesn't exist");exit(-1);}
     char *Line=malloc(sizeof(char )*100);
-    long lineNUM=0;
+    lineNUM=0;
     Node*root=NULL;
     while (!feof(f))
     {
@@ -44,7 +20,7 @@ void runFile(char *filename)
         char *equalSign=strstr(Line,"=");
         if (!equalSign)
         {
-            ERROR(lineNUM,"INVALID EXPRESSION: \"%s\"", Line);
+            ERROR("INVALID EXPRESSION: \"%s\"", Line);
             exit(-1);
         }
         // Tokenizing Left Hand Side.
@@ -62,7 +38,7 @@ void runFile(char *filename)
         infixToPost(format(RHS),i);
         float value = evaluate_postfix(i,root);
         root = insert(root,LHS,value);
-        printf("Line#%ld:\tLHS[%s]=RHS[%s]\n",lineNUM,LHS,RHS);
+        printf("Line#%ld:\tLHS[%s]=RHS[%s]\t",lineNUM,LHS,RHS);
         printf("%s=%.2f\n",LHS,value);
         lineNUM++;
     }

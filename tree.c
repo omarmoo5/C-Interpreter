@@ -40,34 +40,12 @@ Node* search(Node* root, char* key)
     }
 }
 
-void PostOrder(Node* root)
-{
-    if(root)
-    {
-        PostOrder((Node *) root->left);
-        PostOrder((Node *) root->right);
-        printf("%s ",root->name);
-    }
-
-}
-
-void PreOrder(Node* root)
-{
-    if(root)
-    {
-        printf("%s ",root->name);
-        PreOrder((Node *) root->left);
-        PreOrder((Node *) root->right);
-    }
-
-}
-
 void inOrder(Node* root)
 {
     if(root)
     {
         inOrder((Node *) root->left);
-        printf("%s=%f\n", root->name, root->value);
+        printf("%s=%.2f\n", root->name, root->value);
         inOrder((Node *) root->right);
     }
 

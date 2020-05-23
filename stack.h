@@ -5,6 +5,8 @@
 #include<math.h>
 #include<string.h>
 #include<ctype.h>
+#include "tree.h"
+
 #define SIZE 100
 
 typedef union
@@ -23,7 +25,7 @@ stack *initialize();
 float calculate (char x,float op1,float op2);
 int isOperator(const char* character);
 int precedence(char c);
-float evaluate_postfix(char *expression);
+float evaluate_postfix(char *expression,Node* root);
 char* format(char *expression);
 void infixToPost(char *infix, char *postfix);
 

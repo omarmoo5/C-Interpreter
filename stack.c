@@ -1,9 +1,12 @@
+#include "helpers.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include<math.h>
-#include<string.h>
+#include <math.h>
+#include <string.h>
+#include <ctype.h>
+#include "tree.h"
+
 #define SIZE 100
-#define VERBOSE 0
 
 typedef union
 {
@@ -98,7 +101,7 @@ int precedence(char c)
     }
 }
 
-float evaluate_postfix(char *expression)
+float evaluate_postfix(char *expression,Node *root)
 {
     stack *s=initialize();
     Item i1,i2,value;
@@ -108,7 +111,7 @@ float evaluate_postfix(char *expression)
     while( token )
     {
         //printf( "%s\n", token );
-        // printing each token
+        //printing each token
         if(strlen(token)==1 && isOperator(token))
         {
             i2=pop(s);op2=i2.fData;
@@ -119,7 +122,12 @@ float evaluate_postfix(char *expression)
         }
         else
         {
-            i1.fData=strtof(token,NULL);
+            if (isalpha(token[0])){
+                Node *n=search(root,token);
+                if (!n)exit(-1);
+                i1.fData=n->value;
+            }
+            else i1.fData=strtof(token,NULL);
             push(s,i1);
         }
         token = strtok(NULL, " ");
@@ -127,7 +135,7 @@ float evaluate_postfix(char *expression)
     value = pop(s);val = value.fData;
     if (!isempty(s))
     {
-        printf("INVALID EXPRESSION !");
+        ERROR("[Stack Evaluation]:INVALID EXPRESSION EVALUATED\n");
         exit(-1);
     }
     free(s);
@@ -143,8 +151,7 @@ char* format(char *expression)
     char *formattedRHS=malloc(strlen(expression) * 2);
     //Clearing the String
     strcpy(formattedRHS, "");
-    int i;
-    for(i=0;i<strlen(expression);i++)
+    for(int i=0;i<strlen(expression);i++)
     {
         char c=expression[i];
         if(( c == '-' && (i==0||isOperator(&expression[i-1])))||(!isOperator(&c)))
