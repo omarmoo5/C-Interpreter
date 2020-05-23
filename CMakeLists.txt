@@ -3,6 +3,6 @@ project(Project C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(Project main.c stack.h stack.c)
+add_executable(Project main.c stack.h stack.c tree.c tree.h)
 
 target_link_libraries(Project m)
