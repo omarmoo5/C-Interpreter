@@ -5,22 +5,6 @@
 
 #include <stdio.h>
 
-char *blank(char *text)
-{
-    char *blank=malloc(strlen(text)+1);
-    int c = 0, d = 0;
-    while (text[c] != '\0')
-    {
-        if (text[c++] != ' ')
-        {
-            blank[d++] = text[c];
-        }
-    }
-    blank[d] = '\0';
-    blank=realloc(blank,strlen(blank)+1);
-    return blank;
-}
-
 void ERROR(long lineNUM, char *c, ...)
 {
     fprintf( stderr, "ERROR:line:%ld>> ",lineNUM);
@@ -66,7 +50,6 @@ void runFile(char *filename)
         // Tokenizing Left Hand Side.
         char *LHS=malloc(sizeof(char) * (equalSign-Line)+1);
         strcpy(LHS, strtok(Line, "="));
-        LHS=blank(LHS);
         // Single LHS Variable Check.
         for (int i = 0; i < strlen(LHS); ++i)
         {
