@@ -3,7 +3,7 @@
 #include "helpers.h"
 void ERROR(char *c, ...)
 {
-    fprintf( stderr, "ERROR:line:%ld>> ",lineNUM);
+    fprintf( stderr, "ERROR:line:%ld>> ",lineNUM+1);
     char *s;
     va_list lst;
     va_start(lst, c);

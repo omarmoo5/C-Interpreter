@@ -124,7 +124,7 @@ float evaluate_postfix(char *expression,Node *root)
         {
             if (isalpha(token[0])){
                 Node *n=search(root,token);
-                if (!n)exit(-1);
+                if (!n) { ERROR("[Stack Evaluation]:Variable \"%s\" NOT FOUND !\n");exit(-1); }
                 i1.fData=n->value;
             }
             else i1.fData=strtof(token,NULL);
