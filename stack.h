@@ -11,10 +11,10 @@ typedef union
 {
     float fData;
     char cData;
-} Item;
+} floata;
 typedef struct
 {
-    Item items[SIZE];
+    floata items[SIZE];
     int top ;
     //the index of the last element in the stack
 } stack;

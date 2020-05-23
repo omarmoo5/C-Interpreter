@@ -3,34 +3,40 @@
 #include<math.h>
 #include<string.h>
 #define SIZE 100
-#define VERBOSE 1
+#define VERBOSE 0
+
 typedef union
 {
     float fData;
     char cData;
 } Item;
+
 typedef struct
 {
     Item items[SIZE];
     int top ;
     //the index of the last element in the stack
 } stack;
+
 char* tok (char *sr)
 {
     char *token=strtok(sr," ");
     return token;
 }
+
 stack *initialize()
 {
     stack *s=malloc(sizeof(stack));
     s->top=0;
     return s;
 }
+
 void push(stack *s,Item value)
 {
     s->items[s->top++]=value;
     //adding item in the last index
 }
+
 Item pop(stack *s)
 {
     Item value;
@@ -40,6 +46,7 @@ Item pop(stack *s)
     //removing the last element in the
 
 }
+
 Item peek(stack *s)
 {
     return s->items[s->top-1];
@@ -52,8 +59,8 @@ int isempty(stack *s)
     else
         return 0;
     //check if the  is empty
-
 }
+
 float calculate (char x,float op1,float op2)
 {
     switch (x)
@@ -67,6 +74,7 @@ float calculate (char x,float op1,float op2)
         default: return 0;
     }
 }
+
 int isOperator(const char* character)
 {
     switch (character[0])
@@ -75,6 +83,7 @@ int isOperator(const char* character)
         default: return 0;
     }
 }
+
 int precedence(char c)
 {
     switch (c)
@@ -88,6 +97,7 @@ int precedence(char c)
         default:return -99999;
     }
 }
+
 float evaluate_postfix(char *expression)
 {
     stack *s=initialize();
@@ -124,6 +134,7 @@ float evaluate_postfix(char *expression)
     return val;
 
 }
+
 char* format(char *expression)
 {
     if (VERBOSE)puts("[Format] Formatting The Expression");
@@ -152,17 +163,16 @@ char* format(char *expression)
     if (VERBOSE)printf("[Format] After \"%s\"\n",formattedRHS);
     return formattedRHS;
 }
+
 void infixToPost(char *infix, char *postfix)
 {
     int i = 0;
     stack *s = initialize();
     if (VERBOSE) printf("\n[infixToPost] Stack Initialized\n");
 
-    //initiate:
+    // initiate:
     if (VERBOSE) printf("[infixToPost] \"%s\" \n",infix);
-
-
-
+    
     strcpy(postfix,"");
     char *token=strtok(infix," ");
 
@@ -226,6 +236,5 @@ void infixToPost(char *infix, char *postfix)
     if (VERBOSE) printf("[infixToPost] Stack is Empty\n");
     free(s);
     if (VERBOSE) printf("[infixToPost] Stack Freed\n");
-
 }
 
