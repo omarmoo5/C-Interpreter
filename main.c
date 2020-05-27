@@ -3,6 +3,7 @@
 #include "helpers.h"
 #include "stack.h"
 #include "tree.h"
+#include "heaps.h"
 
 void runFile(char *filename)
 {
@@ -22,8 +23,11 @@ void runFile(char *filename)
         if (c == '\n')lines++;
         c=(char)getc(f);
     }
+    lines++;
     rewind(f);
     printf("Lines = %ld\n",lines);
+    variable heap[lines];
+
     while (!feof(f))
     {
         // Scan Full Line.
@@ -56,15 +60,26 @@ void runFile(char *filename)
         infixToPost(format(RHS),i);
         float value = evaluate_postfix(i,root);
         root = insert(root,LHS,value);
+        heap[lineNUM].value=value;
+        heap[lineNUM].name=malloc(strlen(LHS)+1);
+        strcpy(heap[lineNUM].name,LHS);
+        heapifyUp(heap,lineNUM);
         lineNUM++;
         printf("Line#%ld:\tLHS[%s]=RHS[%s]\t",lineNUM,LHS,RHS);
         printf("%s=%.2f\n",LHS,value);
     }
+
+    printf("\n----- \n");
+    heapSort(lineNUM,heap);
+    printArray(heap,lineNUM-1);
+    printf("-----\n");
+
     puts("");
     inOrder(root);
 }
 int main()
 {
     runFile("src.txt");
+
     return 0;
 }
