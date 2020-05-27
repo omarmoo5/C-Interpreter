@@ -44,7 +44,11 @@ void runFile(char *filename)
         // Tokenizing Left Hand Side.
         char *LHS=malloc(sizeof(char) * (equalSign-Line)+1);
         strcpy(LHS, strtok(Line, "="));
-
+        for(int p=strlen(LHS)-1;p>=0;p--)
+        {
+            if(LHS[p]!=' ')break;
+            LHS[p]='\0';
+        }
         // Single LHS Variable Check.
         for (int i = 0; i < strlen(LHS); ++i)
         {
