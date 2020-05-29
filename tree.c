@@ -3,6 +3,9 @@
 #include <string.h>
 #include "tree.h"
 
+//----------------------------------------------------------------
+//-------------------------------------------- Creating A New Node
+
 Node* newNode(char* word,float value)
 {
     Node* n=malloc(sizeof(Node));
@@ -12,6 +15,10 @@ Node* newNode(char* word,float value)
     n->left=n->right=NULL;
     return n;
 }
+
+
+//----------------------------------------------------------------
+//---------------------------------------- Insert Node To The Tree
 
 Node* insert(Node* Root,char* key,float value)
 {
@@ -23,6 +30,10 @@ Node* insert(Node* Root,char* key,float value)
         Root->left=insert(Root->left, key,value);
     return Root;
 }
+
+
+//----------------------------------------------------------------
+//---------------------------------------- Search Through The tree
 
 Node* search(Node* root, char* key)
 {
@@ -37,6 +48,10 @@ Node* search(Node* root, char* key)
         return search((Node *) root->right, key);
     }
 }
+
+
+//----------------------------------------------------------------
+//---------------------------------------------- Inorder Traversal
 
 void inOrder(Node* root)
 {

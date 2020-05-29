@@ -14,19 +14,49 @@ typedef union
     float fData;
     char cData;
 } ITEM;
+
+
+//-----------------------------------------------------
+//------------------------- A Struct Representing Stack
 typedef struct
 {
     ITEM items[SIZE];
     int top ;
-    //the index of the last element in the stack
 } stack;
 
+
+//-----------------------------------------------------
+//---------------------------------- Initializing Stack
 stack *initialize();
+
+
+//-----------------------------------------------------
+//Calculates According To The Function Of Each Operator
 float calculate (char x,float op1,float op2);
+
+
+//-----------------------------------------------------
+//---------------------- Checks If An Operator Is Found
 int isOperator(const char* character);
+
+
+//-----------------------------------------------------
+//---------------- Assign Precedence for each operator
 int precedence(char c);
+
+
+//-----------------------------------------------------
+//-------------------- Evaluates The PostFix Expression
 float evaluate_postfix(char *expression,Node* root);
+
+
+//-----------------------------------------------------
+//------------- Puts The Expression In The Right Format
 char* format(char *expression);
+
+
+//-----------------------------------------------------
+// Reform & Change The Expression From InFix to PostFix
 void infixToPost(char *infix, char *postfix);
 
 #endif //INTERPRETER_STACK_H

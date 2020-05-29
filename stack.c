@@ -21,6 +21,9 @@ typedef struct
     //the index of the last element in the stack
 } stack;
 
+////-----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------ Initializing Stack
+
 stack *initialize()
 {
     stack *s=malloc(sizeof(stack));
@@ -28,11 +31,19 @@ stack *initialize()
     return s;
 }
 
+
+////-----------------------------------------------------------------------------------------
+//------------------------------------------------------------------- Push Item To Last Index
+
 void push(stack *s,Item value)
 {
     s->items[s->top++]=value;
     //adding item in the last index
 }
+
+
+//-----------------------------------------------------------------------------------------
+//----------------------------------------------------------- Pop/Remove Last Item In Stack
 
 Item pop(stack *s)
 {
@@ -44,12 +55,19 @@ Item pop(stack *s)
 
 }
 
+//-----------------------------------------------------------------------------------------
+//---------------------------------------------------------- Peek/Return Last Item In Stack
+
 Item peek(stack *s)
 {
     return s->items[s->top-1];
     //returning the last element in the stack
 }
-int isempty(stack *s)
+
+//-----------------------------------------------------------------------------------------
+//---------------------------------------------------------------- Checks If Stack Is Empty
+
+int isEmpty(stack *s)
 {
     if(s->top==0)
         return 1;
@@ -57,6 +75,9 @@ int isempty(stack *s)
         return 0;
     //check if the  is empty
 }
+
+////-----------------------------------------------------------------------------------------
+//------------------------------------- Calculates According To The Function Of Each Operator
 
 float calculate (char x,float op1,float op2)
 {
@@ -72,6 +93,9 @@ float calculate (char x,float op1,float op2)
     }
 }
 
+//-----------------------------------------------------------------------------------------
+//---------------------------------------------------------- Checks If An Operator Is Found
+
 int isOperator(const char* character)
 {
     switch (character[0])
@@ -80,6 +104,9 @@ int isOperator(const char* character)
         default: return 0;
     }
 }
+
+//-----------------------------------------------------------------------------------------
+//---------------------------------------------------- Assigns Precedence for each operator
 
 int precedence(char c)
 {
@@ -95,19 +122,23 @@ int precedence(char c)
     }
 }
 
+//-----------------------------------------------------------------------------------------
+//-------------------------------------------------------- Evaluates The PostFix Expression
+
 float evaluate_postfix(char *expression,Node *root)
 {
     stack *s=initialize();
     Item i1,i2,value;
     float op1,op2,val;
     char *token=strtok(expression," ");
-    // loop through the string to extract all other tokens
+
+    // loop through the string to extract all the other tokens
     while( token )
     {
-        //printf( "%s\n", token );
-        //printing each token
+        //If An Operator is Found:
         if(strlen(token)==1 && isOperator(token))
         {
+            //POP The Operand From stack, Calculate the operation & push the value
             i2=pop(s);op2=i2.fData;
             i1=pop(s);op1=i1.fData;
             val=calculate(token[0],op1,op2);
@@ -116,81 +147,122 @@ float evaluate_postfix(char *expression,Node *root)
         }
         else
         {
-            if (isalpha(token[0])){
+            //If 1st element of Token Is a Letter (variable found):
+            if (isalpha(token[0]))
+            {
+                //Search For This Variable
                 Node *n=search(root,token);
-                if (!n) { ERROR("[Stack Evaluation]:Variable \"%s\" NOT FOUND !\n",token);exit(-1); }
+
+                //If Variable Not Found:
+                if (!n)
+                {
+                    //Prints an Error Alert for The User That Variable is Not Found
+                    ERROR("[Stack Evaluation]:Variable \"%s\" NOT FOUND !\n",token);
+                    exit(-1);
+                }
+
+                //Assign The Value of The Variable To fData of operand
                 i1.fData=n->value;
             }
             else i1.fData=strtof(token,NULL);
+
+            //Push The Value to the Stack
             push(s,i1);
         }
         token = strtok(NULL, " ");
     }
+
+    //Pop Value From Stack until stack is Empty
     value = pop(s);val = value.fData;
-    if (!isempty(s))
+
+    //If Stack Is Still Not Empty:
+    if (!isEmpty(s))
     {
+        //Prints an Error Alert for The User That Expression Is Invalid
         ERROR("[Stack Evaluation]:INVALID EXPRESSION EVALUATED\n");
         exit(-1);
     }
     free(s);
+
+    //Returns the Evaluated PostFix Value Of Expression
     return val;
 
 }
 
+//-----------------------------------------------------------------------------------------
+//------------------------------------------------- Puts The Expression In The Right Format
+
 char* format(char *expression)
 {
-    if (VERBOSE)    puts("[Format] Formatting The Expression");
-    if (VERBOSE)    printf("[Format] Before \"%s\"\n",expression);
-    //Allocating double its size For the WorstCase Compressed Equation
+    //if (VERBOSE)    puts("[Format] Formatting The Expression");
+   // if (VERBOSE)    printf("[Format] Before \"%s\"\n",expression);
+
+    //Allocating Double its Size For The WorstCase Compressed Equation
     char *formattedRHS=malloc(strlen(expression) * 2);
-    //Clearing the String
+
+    //Clearing the Formatted RHS String
     strcpy(formattedRHS, "");
+
     for(int i=0;i<strlen(expression);i++)
     {
         char c=expression[i];
+
+        //If '-' is Considered As a Negative Sign Not an Operator:
         if(( c == '-' && (i==0||isOperator(&expression[i-1])))||(!isOperator(&c)))
         {
+            //Concatenates The '-' To The Formatted RHS String
             strncat(formattedRHS, &c, 1);
         }
         else
         {
+            //Concatenates Operands & Operators To The Formatted RHS String & Adding Spaces
             strcat(formattedRHS, " ");
             strncat(formattedRHS, &c, 1);
             strcat(formattedRHS, " ");
         }
     }
-    //reallocating to the proper size of the string
+
+    //ReAllocating To The Proper Size Of The String
     formattedRHS = (char*)realloc(formattedRHS, strlen(formattedRHS)+1);
-    if (VERBOSE)printf("[Format] After \"%s\"\n",formattedRHS);
+
+    //if (VERBOSE)    printf("[Format] After \"%s\"\n",formattedRHS);
+
+    //Return The Formatted Expression with Spaces
     return formattedRHS;
 }
+
+//-----------------------------------------------------------------------------------------
+//------------------------------------ Reform & Change The Expression From InFix to PostFix
 
 void infixToPost(char *infix, char *postfix)
 {
     int i = 0;
     stack *s = initialize();
-    if (VERBOSE) printf("\n[infixToPost] Stack Initialized\n");
+    //if (VERBOSE) printf("\n[infixToPost] Stack Initialized\n");
 
-    // initiate:
-    if (VERBOSE) printf("[infixToPost] \"%s\" \n",infix);
+    //Initiate:
+    //if (VERBOSE) printf("[infixToPost] \"%s\" \n",infix);
     
     strcpy(postfix,"");
     char *token=strtok(infix," ");
 
-    // loop through the string to extract all other tokens
+    //Loop Through The String To Extract All The Other Tokens
     while(token)
     {
+        //If An Operator Is Found:
         if(strlen(token)==1 && isOperator(token))
-        {   //Operator
-            Item myitem ;
+        {
+            Item myItem ;
             char op[]=" ";
-            if (VERBOSE) printf("[infixToPost %d] Operator [%c] \n",i++,token[0]);
-            myitem.cData = token[0];
+
+           // if (VERBOSE) printf("[infixToPost %d] Operator [%c] \n",i++,token[0]);
+
+            myItem.cData = token[0];
             if (token[0]==')')
             {
-                while(peek(s).cData != '(' && !isempty(s))
+                while(peek(s).cData != '(' && !isEmpty(s))
                 {
-                    if (VERBOSE) printf("[infixToPost %d] peek [%c] \n",i++,peek(s).cData);
+                   // if (VERBOSE) printf("[infixToPost %d] peek [%c] \n",i++,peek(s).cData);
                     op[0] = pop(s).cData;
                     strcat(postfix,op);
                     strcat(postfix," ");
@@ -198,28 +270,31 @@ void infixToPost(char *infix, char *postfix)
                 }
                 pop(s);
             }
-            else if (isempty(s)|| precedence(token[0])>precedence(peek(s).cData) || (!isempty(s) && peek(s).cData == '('))
+            else if (isEmpty(s) || precedence(token[0]) > precedence(peek(s).cData) || (!isEmpty(s) && peek(s).cData == '('))
             {
-                if (VERBOSE) printf("[infixToPost %d] [%c] precedence %d | isEmpty %d \n",i++,myitem.cData,precedence(myitem.cData),isempty(s));
-                push(s,myitem);
-                if (VERBOSE) printf("[infixToPost %d] Pushed %c \n",i++,peek(s).cData);
+               /* if (VERBOSE) printf("[infixToPost %d] [%c] precedence %d | isEmpty %d \n", i++, myItem.cData, precedence(myItem.cData),
+                                    isEmpty(s));*/
+                push(s, myItem);
+                /*if (VERBOSE) printf("[infixToPost %d] Pushed %c \n",i++,peek(s).cData);*/
 
             }
             else if (precedence(token[0])<=precedence(peek(s).cData))
             {
-                if (VERBOSE) printf("[infixToPost %d] [%c] precedence %d < %d | isEmpty %d \n",i++,myitem.cData,precedence(myitem.cData),precedence(peek(s).cData),isempty(s));
-                while(precedence(token[0])<precedence(peek(s).cData) && !isempty(s))
+                /*if (VERBOSE) printf("[infixToPost %d] [%c] precedence %d < %d | isEmpty %d \n", i++, myItem.cData, precedence(myItem.cData), precedence(peek(s).cData),
+                                    isEmpty(s));*/
+                while(precedence(token[0])<precedence(peek(s).cData) && !isEmpty(s))
                 {
                     op[0] = pop(s).cData;
                     strcat(postfix,op);
                     strcat(postfix," ");
                     op[0] = ' ';
                 }
-                push(s,myitem);
+                push(s, myItem);
             }
         }
-        else //Operand
-        {   if (VERBOSE) printf("[infixToPost %d] Operand [%s] \n",i++,token);
+        //Operand Is Found:
+        else
+        { //  if (VERBOSE) printf("[infixToPost %d] Operand [%s] \n",i++,token);
             strcat(postfix,token);
             strcat(postfix," ");
         }
@@ -227,15 +302,15 @@ void infixToPost(char *infix, char *postfix)
     }
     // Popping All The Stack
     char op[]=" ";
-    while (!isempty(s))
+    while (!isEmpty(s))
     {
         op[0] = pop(s).cData;
         strcat(postfix,op);
         strcat(postfix," ");
         op[0] = ' ';
     }
-    if (VERBOSE) printf("[infixToPost] Stack is Empty\n");
+   // if (VERBOSE) printf("[infixToPost] Stack is Empty\n");
     free(s);
-    if (VERBOSE) printf("[infixToPost] Stack Freed\n");
+    //if (VERBOSE) printf("[infixToPost] Stack Freed\n");
 }
 
