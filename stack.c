@@ -145,8 +145,8 @@ float evaluate_postfix(char *expression,Node *root)
 
 char* format(char *expression)
 {
-    if (VERBOSE)puts("[Format] Formatting The Expression");
-    if (VERBOSE)printf("[Format] Before \"%s\"\n",expression);
+    if (VERBOSE)    puts("[Format] Formatting The Expression");
+    if (VERBOSE)    printf("[Format] Before \"%s\"\n",expression);
     //Allocating double its size For the WorstCase Compressed Equation
     char *formattedRHS=malloc(strlen(expression) * 2);
     //Clearing the String

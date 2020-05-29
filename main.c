@@ -32,6 +32,7 @@ void runFile(char *filename)
     {
         // Scan Full Line.
         fscanf(f, "%[^\n]\n", Line);
+        Line = removeSpaces(Line);
 
         // Two-sided equation check "=".
         char *equalSign=strstr(Line,"=");
@@ -42,6 +43,7 @@ void runFile(char *filename)
         }
 
         // Tokenizing Left Hand Side.
+        if(Line[0]=='='){ERROR("NO LHS !");exit(-1);}
         char *LHS=malloc(sizeof(char) * (equalSign-Line)+1);
         strcpy(LHS, strtok(Line, "="));
         for(int p=strlen(LHS)-1;p>=0;p--)
@@ -60,6 +62,7 @@ void runFile(char *filename)
 
         // Tokenizing Right Hand Side.
         char *RHS=strtok(NULL,"");
+        if(!RHS){ERROR("NO RHS !");exit(-1);}
         char i[100];
         infixToPost(format(RHS),i);
         float value = evaluate_postfix(i,root);
