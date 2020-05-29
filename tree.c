@@ -133,11 +133,11 @@ void fromTreeToHeap(Node * root)
        index++;
     }
     puts("------------------------");
-    heapSort(lineNUM-1,heap);
+    heapSort(index,heap);
     // COLOR(-5);
     puts("Order BY Variable Value:");
     //COLOR(0);
-    printArray(heap,lineNUM-1);
+    printArray(heap,index);
 }
 
 
