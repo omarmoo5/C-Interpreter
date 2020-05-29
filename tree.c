@@ -68,6 +68,14 @@ void inOrder(Node* root)
         inOrder((Node *) root->right);
     }
 }
+int count(Node* root)
+{
+    if(root==NULL)
+        return 0;
+    else
+        return 1+count(root->left)+count(root->right);
+
+}
 void fromTreeToHeap(Node * root)
 {
     FILE *f=fopen("src.txt","r");
@@ -78,17 +86,18 @@ void fromTreeToHeap(Node * root)
         return;
 
     current = root;
-    lineNUM=0;
-    variable heap[countFileLines(f)];
+
+    variable heap[count(root)];
+    int index=0;
 
 
     while (current != NULL) {
 
         if (current->left == NULL) {
-            heap[lineNUM].value=current->value;
-            heap[lineNUM].name=malloc(strlen(current->name)+1);
-            strcpy(heap[lineNUM].name,current->name);
-            heapifyUp(heap,lineNUM);
+            heap[index].value=current->value;
+            heap[index].name=malloc(strlen(current->name)+1);
+            strcpy(heap[index].name,current->name);
+            heapifyUp(heap,index);
 
 
             current = current->right;
@@ -113,15 +122,15 @@ void fromTreeToHeap(Node * root)
             else {
                 pre->right = NULL;
 
-                heap[lineNUM].value=current->value;
-                heap[lineNUM].name=malloc(strlen(current->name)+1);
-                strcpy(heap[lineNUM].name,current->name);
-                heapifyUp(heap,lineNUM);
+                heap[index].value=current->value;
+                heap[index].name=malloc(strlen(current->name)+1);
+                strcpy(heap[index].name,current->name);
+                heapifyUp(heap,index);
 
                 current = current->right;
             } /* End of if condition pre->right == NULL */
         }/* End of if condition current->left == NULL*/
-       lineNUM++;
+       index++;
     }
     puts("------------------------");
     heapSort(lineNUM-1,heap);
