@@ -7,6 +7,7 @@
 
 void runFile(char *filename)
 {
+    VERBOSE("Reading the file");
     FILE *f=fopen(filename, "r");
 
     if(!f)
