@@ -13,14 +13,14 @@ typedef union
 {
     float fData;
     char cData;
-} ITEM;
+} Item;
 
 
 //-----------------------------------------------------
 //------------------------- A Struct Representing Stack
 typedef struct
 {
-    ITEM items[SIZE];
+    Item items[SIZE];
     int top ;
 } stack;
 

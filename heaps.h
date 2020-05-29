@@ -4,15 +4,15 @@
 
 typedef struct variable
 {
-    char*   name;
+    char*  name;
     float value;
 
 } variable;
 
-
 void siftUP(variable hp[], int i);
-void printArray(variable *arr,int n);
+void heapifyUp(variable *hp,unsigned long n);
 void heapifyDown(variable *hp,int n);
-void heapSort(int n,variable arr[]);
-void heapifyUp(variable *hp,int n);
+void heapSort(unsigned long n,variable arr[]);
+void printArray(variable *arr,unsigned long n);
+
 #endif //C_INTERPRETER_HEAPS_H

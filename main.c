@@ -8,24 +8,14 @@
 void runFile(char *filename)
 {
     FILE *f=fopen(filename, "r");
+
     if(!f)
-    {
         ERROR("File doesn't exist");
-        exit(-1);
-    }
+
     char *Line=malloc(sizeof(char)*100);
     lineNUM=0;
-    Node*root=NULL;
-    char c = (char)fgetc(f);
-    long lines =0;
-    while (!feof(f))
-    {
-        if (c == '\n')lines++;
-        c=(char)getc(f);
-    }
-    lines++;
-    rewind(f);
-    variable heap[lines];
+    Node* root=NULL;
+    variable heap[countFileLines(f)];
 
     while (!feof(f))
     {
@@ -33,35 +23,28 @@ void runFile(char *filename)
         fscanf(f, "%[^\n]\n", Line);
         Line = removeSpaces(Line);
 
-        // Two-sided equation check "=".
+        // Two-sided equation check for the equal sign '='.
         char *equalSign=strstr(Line,"=");
         if (!equalSign)
-        {
             ERROR("INVALID EXPRESSION: \"%s\"", Line);
-            exit(-1);
-        }
 
-        // Tokenizing Left Hand Side.
-        if(Line[0]=='='){ERROR("NO LHS !");exit(-1);}
+        // Tokenizing Left Hand Side (LHS).
+        if(Line[0]=='=')
+            ERROR("NO LHS !");
         char *LHS=malloc(sizeof(char) * (equalSign-Line)+1);
         strcpy(LHS, strtok(Line, "="));
-        for(int p=strlen(LHS)-1;p>=0;p--)
-        {
-            if(LHS[p]!=' ')break;
-            LHS[p]='\0';
-        }
-        // Single LHS Variable Check.
+
+        // Single LHS Variable Check. (Valid Variable Name)
         for (int i = 0; i < strlen(LHS); ++i)
         {
-            if (!isalpha(LHS[0]) || ispunct(LHS[i]) && LHS[i]!='_'){
-                ERROR("INVALID LHS: \"%s\"\n", LHS);
-                exit(-1);
-            }
+            if (!isalpha(LHS[0]) || ispunct(LHS[i]) && LHS[i]!='_')
+                ERROR("INVALID LHS: \"%s\"", LHS);
         }
 
         // Tokenizing Right Hand Side.
         char *RHS=strtok(NULL,"");
-        if(!RHS){ERROR("NO RHS !");exit(-1);}
+        if(!RHS)
+            ERROR("NO RHS !");
         char i[100];
         infixToPost(format(RHS),i);
         float value = evaluate_postfix(i,root);
@@ -70,23 +53,27 @@ void runFile(char *filename)
         heap[lineNUM].name=malloc(strlen(LHS)+1);
         strcpy(heap[lineNUM].name,LHS);
         heapifyUp(heap,lineNUM);
-        lineNUM++;
-        printf("Line#%ld:\tLHS[%s]=RHS[%s]\t",lineNUM,LHS,RHS);
+
+        printf("Line#%ld:\tLHS[%s]=RHS[%s]\n",lineNUM++ + 1,LHS,RHS);
+        COLOR(4);
         printf("%s=%.2f\n",LHS,value);
+        COLOR(0);
     }
 
-    printf("\n----- \n");
-    heapSort(lineNUM,heap);
-    puts("Order BY Variable Value: ");
-    printArray(heap,lineNUM-1);
-    printf("-----\n");
-
-    puts("Order BY Variable Name:");
+    puts("------------------------");
+    COLOR(-5);
+    puts("Order BY Variable Name: ");
+    COLOR(0);
     inOrder(root);
+    puts("------------------------");
+    heapSort(lineNUM-1,heap);
+    COLOR(-5);
+    puts("Order BY Variable Value:");
+    COLOR(0);
+    printArray(heap,lineNUM-1);
 }
 int main()
 {
     runFile("src.txt");
-
     return 0;
 }

@@ -1,25 +1,11 @@
+#include "stack.h"
 #include "helpers.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 #include <ctype.h>
 #include "tree.h"
 
-#define SIZE 100
-
-typedef union
-{
-    float fData;
-    char cData;
-} Item;
-
-typedef struct
-{
-    Item items[SIZE];
-    int top ;
-    //the index of the last element in the stack
-} stack;
 
 ////-----------------------------------------------------------------------------------------
 //------------------------------------------------------------------------ Initializing Stack
@@ -157,7 +143,7 @@ float evaluate_postfix(char *expression,Node *root)
                 if (!n)
                 {
                     //Prints an Error Alert for The User That Variable is Not Found
-                    ERROR("[Stack Evaluation]:Variable \"%s\" NOT FOUND !\n",token);
+                    ERROR("[Stack Evaluation]:Variable \"%s\" NOT FOUND !",token);
                     exit(-1);
                 }
 
@@ -177,11 +163,9 @@ float evaluate_postfix(char *expression,Node *root)
 
     //If Stack Is Still Not Empty:
     if (!isEmpty(s))
-    {
         //Prints an Error Alert for The User That Expression Is Invalid
-        ERROR("[Stack Evaluation]:INVALID EXPRESSION EVALUATED\n");
-        exit(-1);
-    }
+        ERROR("[Stack Evaluation]:INVALID EXPRESSION EVALUATED");
+
     free(s);
 
     //Returns the Evaluated PostFix Value Of Expression
@@ -194,8 +178,8 @@ float evaluate_postfix(char *expression,Node *root)
 
 char* format(char *expression)
 {
-    //if (VERBOSE)    puts("[Format] Formatting The Expression");
-   // if (VERBOSE)    printf("[Format] Before \"%s\"\n",expression);
+    VERBOSE("[Format] Formatting The Expression");
+    VERBOSE("[Format] Before \"%s\"",expression);
 
     //Allocating Double its Size For The WorstCase Compressed Equation
     char *formattedRHS=malloc(strlen(expression) * 2);
@@ -225,7 +209,7 @@ char* format(char *expression)
     //ReAllocating To The Proper Size Of The String
     formattedRHS = (char*)realloc(formattedRHS, strlen(formattedRHS)+1);
 
-    //if (VERBOSE)    printf("[Format] After \"%s\"\n",formattedRHS);
+    VERBOSE("[Format] After \"%s\"",formattedRHS);
 
     //Return The Formatted Expression with Spaces
     return formattedRHS;
@@ -238,10 +222,10 @@ void infixToPost(char *infix, char *postfix)
 {
     int i = 0;
     stack *s = initialize();
-    //if (VERBOSE) printf("\n[infixToPost] Stack Initialized\n");
+    VERBOSE("[infixToPost] Stack Initialized");
 
     //Initiate:
-    //if (VERBOSE) printf("[infixToPost] \"%s\" \n",infix);
+    VERBOSE("[infixToPost] infix \"%s\" ",infix);
     
     strcpy(postfix,"");
     char *token=strtok(infix," ");
@@ -255,14 +239,14 @@ void infixToPost(char *infix, char *postfix)
             Item myItem ;
             char op[]=" ";
 
-           // if (VERBOSE) printf("[infixToPost %d] Operator [%c] \n",i++,token[0]);
+            VERBOSE("[infixToPost %d] Operator [%c]",i++,token[0]);
 
             myItem.cData = token[0];
             if (token[0]==')')
             {
                 while(peek(s).cData != '(' && !isEmpty(s))
                 {
-                   // if (VERBOSE) printf("[infixToPost %d] peek [%c] \n",i++,peek(s).cData);
+                    VERBOSE("[infixToPost %d] peek [%c]",i++,peek(s).cData);
                     op[0] = pop(s).cData;
                     strcat(postfix,op);
                     strcat(postfix," ");
@@ -272,16 +256,16 @@ void infixToPost(char *infix, char *postfix)
             }
             else if (isEmpty(s) || precedence(token[0]) > precedence(peek(s).cData) || (!isEmpty(s) && peek(s).cData == '('))
             {
-               /* if (VERBOSE) printf("[infixToPost %d] [%c] precedence %d | isEmpty %d \n", i++, myItem.cData, precedence(myItem.cData),
-                                    isEmpty(s));*/
+                VERBOSE("[infixToPost %d] [%c] precedence %d | isEmpty %d "
+                        , i++, myItem.cData, precedence(myItem.cData),isEmpty(s));
                 push(s, myItem);
-                /*if (VERBOSE) printf("[infixToPost %d] Pushed %c \n",i++,peek(s).cData);*/
+                VERBOSE("[infixToPost %d] Pushed %c ",i++,peek(s).cData);
 
             }
             else if (precedence(token[0])<=precedence(peek(s).cData))
             {
-                /*if (VERBOSE) printf("[infixToPost %d] [%c] precedence %d < %d | isEmpty %d \n", i++, myItem.cData, precedence(myItem.cData), precedence(peek(s).cData),
-                                    isEmpty(s));*/
+                VERBOSE("[infixToPost %d] [%c] precedence %d < %d | isEmpty %d ",
+                         i++,myItem.cData, precedence(myItem.cData), precedence(peek(s).cData),isEmpty(s));
                 while(precedence(token[0])<precedence(peek(s).cData) && !isEmpty(s))
                 {
                     op[0] = pop(s).cData;
@@ -294,7 +278,8 @@ void infixToPost(char *infix, char *postfix)
         }
         //Operand Is Found:
         else
-        { //  if (VERBOSE) printf("[infixToPost %d] Operand [%s] \n",i++,token);
+        {
+            VERBOSE("[infixToPost %d] Operand [%s] ",i++,token);
             strcat(postfix,token);
             strcat(postfix," ");
         }
@@ -309,8 +294,8 @@ void infixToPost(char *infix, char *postfix)
         strcat(postfix," ");
         op[0] = ' ';
     }
-   // if (VERBOSE) printf("[infixToPost] Stack is Empty\n");
+    VERBOSE("[infixToPost] Stack is Empty");
     free(s);
-    //if (VERBOSE) printf("[infixToPost] Stack Freed\n");
+    VERBOSE("[infixToPost] Stack Freed");
 }
 

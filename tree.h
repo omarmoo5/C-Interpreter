@@ -5,7 +5,7 @@
 //----------------- A Struct Representing a Node in BST
 typedef struct Node
 {
-    char*   name;
+    char*  name;
     float value;
     struct Node* left;
     struct Node*right;

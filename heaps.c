@@ -13,16 +13,15 @@ void siftUP(variable hp[], int i)
     }
 }
 
-void printArray(variable *arr,int n){
+void printArray(variable *arr,unsigned long n){
     int i=0;
-    while(i<=n) {
+    while(i<n) {
         printf("%s = %.2f \n",arr[i].name,arr[i].value);
         i++;
     }
-    printf("\n");
 }
 
-void heapifyUp(variable *hp,int n){ // O(n log(n))
+void heapifyUp(variable *hp,unsigned long n){ // O(n log(n))
     for (int i=1;i<n;i++)
 
     {siftUP(hp,i);}
@@ -47,7 +46,7 @@ void heapifyDown(variable *arr,int n){
         }
 }
 
-void heapSort(int n,variable arr[n]){ // 0 base indexing
+void heapSort(unsigned long n,variable arr[n]){ // 0 base indexing
     heapifyDown(arr, n);
     for (int i = n - 1; i > 0; i--)
     {
@@ -66,6 +65,5 @@ void heapSort(int n,variable arr[n]){ // 0 base indexing
         } while (index < i);
     }
 }
-
 
 
