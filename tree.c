@@ -78,7 +78,6 @@ int count(Node* root)
 }
 void fromTreeToHeap(Node * root)
 {
-    FILE *f=fopen("src.txt","r");
 
     Node *current, *pre;
 

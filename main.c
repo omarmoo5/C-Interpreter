@@ -65,7 +65,6 @@ void runFile(char *filename)
     }
 
 
-
     puts("------------------------");
    // COLOR(-5);
     puts("Order BY Variable Name: ");
