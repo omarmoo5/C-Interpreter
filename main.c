@@ -78,10 +78,11 @@ void runFile(char *filename)
 
     printf("\n----- \n");
     heapSort(lineNUM,heap);
+    puts("Order BY Variable Value: ");
     printArray(heap,lineNUM-1);
     printf("-----\n");
 
-    puts("");
+    puts("Order BY Variable Name:");
     inOrder(root);
 }
 int main()

@@ -21,12 +21,6 @@ typedef struct
     //the index of the last element in the stack
 } stack;
 
-char* tok (char *sr)
-{
-    char *token=strtok(sr," ");
-    return token;
-}
-
 stack *initialize()
 {
     stack *s=malloc(sizeof(stack));

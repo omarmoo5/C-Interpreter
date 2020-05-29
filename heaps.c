@@ -15,8 +15,10 @@ void siftUP(variable hp[], int i)
 
 void printArray(variable *arr,int n){
     int i=0;
-    while(i<=n) {printf("%s = %f \n",arr[i].name,arr[i].value);
-    i++;}
+    while(i<=n) {
+        printf("%s = %.2f \n",arr[i].name,arr[i].value);
+        i++;
+    }
     printf("\n");
 }
 
@@ -39,19 +41,18 @@ void heapifyDown(variable *arr,int n){
 // swap child and parent until parent is smaller
             while (arr[j].value > arr[(j-1)/2].value)
             {
-                swap(arr[j], arr[(j-1)/2]);
+                swap(arr[j], arr[(j-1)/2])
                 j = (j-1)/2;
             }
         }
 }
 
 void heapSort(int n,variable arr[n]){ // 0 base indexing
-    int i=0;
     heapifyDown(arr, n);
-    for (i = n - 1; i > 0; i--)
+    for (int i = n - 1; i > 0; i--)
     {
     // swap value of first indexed with last indexed
-        swap(arr[0], arr[i]);
+        swap(arr[0], arr[i])
     // maintaining heap property after each swapping
         int j = 0, index;
         do
@@ -60,7 +61,7 @@ void heapSort(int n,variable arr[n]){ // 0 base indexing
     // if left child is smaller than right child point to right
             if (arr[index].value<arr[index + 1].value && index < (i - 1))index++;
     // if parent is smaller than child then swap parent with child
-            if (arr[j].value<arr[index].value && index < i) swap(arr[j], arr[index]);
+            if (arr[j].value<arr[index].value && index < i) swap(arr[j], arr[index])
             j = index;
         } while (index < i);
     }

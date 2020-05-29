@@ -12,7 +12,6 @@ typedef struct variable
 
 void siftUP(variable hp[], int i);
 void printArray(variable *arr,int n);
-void siftDown(variable hp[], int i,int n);
 void heapifyDown(variable *hp,int n);
 void heapSort(int n,variable arr[]);
 void heapifyUp(variable *hp,int n);
