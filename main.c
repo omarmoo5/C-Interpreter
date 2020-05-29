@@ -25,7 +25,6 @@ void runFile(char *filename)
     }
     lines++;
     rewind(f);
-    printf("Lines = %ld\n",lines);
     variable heap[lines];
 
     while (!feof(f))
