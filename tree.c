@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "tree.h"
+#include "heaps.h"
+#include "helpers.h"
 
 //----------------------------------------------------------------
 //-------------------------------------------- Creating A New Node
@@ -22,8 +24,12 @@ Node* newNode(char* word,float value)
 
 Node* insert(Node* Root,char* key,float value)
 {
+    Node *n=search(Root,key);
+
     if(Root==NULL)
         return newNode(key,value);
+    else if(n)
+        n->value=value;
     else if(strcasecmp(key,Root->name) > 0)
         Root->right=insert(Root->right, key,value);
     else

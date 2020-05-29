@@ -50,29 +50,36 @@ void runFile(char *filename)
         infixToPost(format(RHS),i);
         float value = evaluate_postfix(i,root);
         root = insert(root,LHS,value);
+
+
         heap[lineNUM].value=value;
         heap[lineNUM].name=malloc(strlen(LHS)+1);
         strcpy(heap[lineNUM].name,LHS);
         heapifyUp(heap,lineNUM);
 
+
         printf("Line#%ld:\tLHS[%s]=RHS[%s]\n",lineNUM++ + 1,LHS,RHS);
-        COLOR(4);
+    //    COLOR(4);
         printf("%s=%.2f\n",LHS,value);
-        COLOR(0);
+      //  COLOR(0);
     }
 
+
+
     puts("------------------------");
-    COLOR(-5);
+   // COLOR(-5);
     puts("Order BY Variable Name: ");
-    COLOR(0);
+    //COLOR(0);
     inOrder(root);
     puts("------------------------");
     heapSort(lineNUM-1,heap);
-    COLOR(-5);
+   // COLOR(-5);
     puts("Order BY Variable Value:");
-    COLOR(0);
+    //COLOR(0);
     printArray(heap,lineNUM-1);
+
 }
+
 int main()
 {
     runFile("src.txt");
