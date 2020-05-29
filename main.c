@@ -52,10 +52,10 @@ void runFile(char *filename)
         root = insert(root,LHS,value);
 
 
-        heap[lineNUM].value=value;
+       /* heap[lineNUM].value=value;
         heap[lineNUM].name=malloc(strlen(LHS)+1);
         strcpy(heap[lineNUM].name,LHS);
-        heapifyUp(heap,lineNUM);
+        heapifyUp(heap,lineNUM);*/
 
 
         printf("Line#%ld:\tLHS[%s]=RHS[%s]\n",lineNUM++ + 1,LHS,RHS);
@@ -71,12 +71,14 @@ void runFile(char *filename)
     puts("Order BY Variable Name: ");
     //COLOR(0);
     inOrder(root);
-    puts("------------------------");
+    fromTreeToHeap(root);
+
+   /* puts("------------------------");
     heapSort(lineNUM-1,heap);
    // COLOR(-5);
     puts("Order BY Variable Value:");
     //COLOR(0);
-    printArray(heap,lineNUM-1);
+    printArray(heap,lineNUM-1);*/
 
 }
 

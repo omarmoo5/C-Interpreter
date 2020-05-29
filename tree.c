@@ -68,3 +68,70 @@ void inOrder(Node* root)
         inOrder((Node *) root->right);
     }
 }
+void fromTreeToHeap(Node * root)
+{
+    FILE *f=fopen("src.txt","r");
+
+    Node *current, *pre;
+
+    if (root == NULL)
+        return;
+
+    current = root;
+    lineNUM=0;
+    variable heap[countFileLines(f)];
+
+
+    while (current != NULL) {
+
+        if (current->left == NULL) {
+            heap[lineNUM].value=current->value;
+            heap[lineNUM].name=malloc(strlen(current->name)+1);
+            strcpy(heap[lineNUM].name,current->name);
+            heapifyUp(heap,lineNUM);
+
+
+            current = current->right;
+        }
+        else {
+
+            /* Find the inorder predecessor of current */
+            pre = current->left;
+            while (pre->right != NULL && pre->right != current)
+                pre = pre->right;
+
+            /* Make current as the right child of its inorder
+               predecessor */
+            if (pre->right == NULL) {
+                pre->right = current;
+                current = current->left;
+            }
+
+                /* Revert the changes made in the 'if' part to restore
+                   the original tree i.e., fix the right child
+                   of predecessor */
+            else {
+                pre->right = NULL;
+
+                heap[lineNUM].value=current->value;
+                heap[lineNUM].name=malloc(strlen(current->name)+1);
+                strcpy(heap[lineNUM].name,current->name);
+                heapifyUp(heap,lineNUM);
+
+                current = current->right;
+            } /* End of if condition pre->right == NULL */
+        }/* End of if condition current->left == NULL*/
+       lineNUM++;
+    }
+    puts("------------------------");
+    heapSort(lineNUM-1,heap);
+    // COLOR(-5);
+    puts("Order BY Variable Value:");
+    //COLOR(0);
+    printArray(heap,lineNUM-1);
+}
+
+
+
+
+
