@@ -4,7 +4,7 @@
 #include "tree.h"
 #include "heaps.h"
 #include "helpers.h"
-
+int heapIndex=0;
 //----------------------------------------------------------------
 //-------------------------------------------- Creating A New Node
 
@@ -76,67 +76,26 @@ int count(Node* root)
         return 1+count(root->left)+count(root->right);
 
 }
-void fromTreeToHeap(Node * root)
+
+//----------------------------------------------------------------
+//----------------------------------------------
+void fromTreeToHeap(Node * root,variable heap[])
 {
+    if(root)
+    {
+        fromTreeToHeap((Node *) root->left,heap);
 
-    Node *current, *pre;
+        heap[heapIndex].value=root->value;
+        heap[heapIndex].name=malloc(strlen(root->name)+1);
+        strcpy(heap[heapIndex].name,root->name);
+        heapifyUp(heap,heapIndex);
 
-    if (root == NULL)
-        return;
+        ++heapIndex;
 
-    current = root;
+        fromTreeToHeap((Node *) root->right,heap);
 
-    variable heap[count(root)];
-    int index=0;
-
-
-    while (current != NULL) {
-
-        if (current->left == NULL) {
-            heap[index].value=current->value;
-            heap[index].name=malloc(strlen(current->name)+1);
-            strcpy(heap[index].name,current->name);
-            heapifyUp(heap,index);
-
-
-            current = current->right;
-        }
-        else {
-
-            /* Find the inorder predecessor of current */
-            pre = current->left;
-            while (pre->right != NULL && pre->right != current)
-                pre = pre->right;
-
-            /* Make current as the right child of its inorder
-               predecessor */
-            if (pre->right == NULL) {
-                pre->right = current;
-                current = current->left;
-            }
-
-                /* Revert the changes made in the 'if' part to restore
-                   the original tree i.e., fix the right child
-                   of predecessor */
-            else {
-                pre->right = NULL;
-
-                heap[index].value=current->value;
-                heap[index].name=malloc(strlen(current->name)+1);
-                strcpy(heap[index].name,current->name);
-                heapifyUp(heap,index);
-
-                current = current->right;
-            } /* End of if condition pre->right == NULL */
-        }/* End of if condition current->left == NULL*/
-       index++;
     }
-    puts("------------------------");
-    heapSort(index,heap);
-    // COLOR(-5);
-    puts("Order BY Variable Value:");
-    //COLOR(0);
-    printArray(heap,index);
+
 }
 
 
