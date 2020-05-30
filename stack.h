@@ -57,6 +57,6 @@ char* format(char *expression);
 
 //-----------------------------------------------------
 // Reform & Change The Expression From InFix to PostFix
-void infixToPost(char *infix, char *postfix);
+char * infixToPost(char *infix);
 
 #endif //INTERPRETER_STACK_H

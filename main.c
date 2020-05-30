@@ -5,6 +5,14 @@
 #include "tree.h"
 #include "heaps.h"
 
+//Global tree root
+Node* ROOT=NULL;
+
+//Wrapper Function takes key and value to insert in the BST.
+void put(char *key,float value){
+    ROOT=insert(ROOT, key, value);
+}
+
 void runFile(char *filename)
 {
     VERBOSE("Reading the file");
@@ -15,7 +23,6 @@ void runFile(char *filename)
 
     char *Line=malloc(sizeof(char)*100);
     lineNUM=0;
-    Node* root=NULL;
     while (!feof(f))
     {
         // Scan Full Line.
@@ -44,36 +51,33 @@ void runFile(char *filename)
         char *RHS=strtok(NULL,"");
         if(!RHS)
             ERROR("NO RHS !");
-        char i[100];
-        infixToPost(format(RHS),i);
-        float value = evaluate_postfix(i,root);
-        root = insert(root,LHS,value);
 
+        char *Postfix=infixToPost(format(RHS));
+        float value = evaluate_postfix(Postfix, ROOT);
 
-
+        put(LHS,value);
 
         printf("Line#%ld:\tLHS[%s]=RHS[%s]\n",lineNUM++ + 1,LHS,RHS);
-    //    COLOR(4);
+//        COLOR(4);
         printf("%s=%.2f\n",LHS,value);
-      //  COLOR(0);
+//        COLOR(0);
     }
 
-
     puts("------------------------");
-   // COLOR(-5);
+//    COLOR(-5);
     puts("Order BY Variable Name: ");
-    //COLOR(0);
-    inOrder(root);
+//    COLOR(0);
+    inOrder(ROOT);
 
-    variable heap[count(root)];
-    fromTreeToHeap(root,heap);
+    variable heap[count(ROOT)];
+    fromTreeToHeap(ROOT, heap);
 
     puts("------------------------");
-    heapSort(count(root),heap);
-   // COLOR(-5);
+    heapSort(count(ROOT), heap);
+//    COLOR(-5);
     puts("Order BY Variable Value:");
-    //COLOR(0);
-    printArray(heap,count(root));
+//    COLOR(0);
+    printArray(heap,count(ROOT));
 
 }
 

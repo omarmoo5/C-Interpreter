@@ -218,8 +218,9 @@ char* format(char *expression)
 //-----------------------------------------------------------------------------------------
 //------------------------------------ Reform & Change The Expression From InFix to PostFix
 
-void infixToPost(char *infix, char *postfix)
+char * infixToPost(char *infix)
 {
+    char *postfix=malloc(strlen(infix)+1);
     int i = 0;
     stack *s = initialize();
     VERBOSE("[infixToPost] Stack Initialized");
@@ -297,5 +298,6 @@ void infixToPost(char *infix, char *postfix)
     VERBOSE("[infixToPost] Stack is Empty");
     free(s);
     VERBOSE("[infixToPost] Stack Freed");
+    return postfix;
 }
 

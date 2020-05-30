@@ -3,8 +3,7 @@
 #include <string.h>
 #include "tree.h"
 #include "heaps.h"
-#include "helpers.h"
-int heapIndex=0;
+
 //----------------------------------------------------------------
 //-------------------------------------------- Creating A New Node
 
@@ -18,17 +17,16 @@ Node* newNode(char* word,float value)
     return n;
 }
 
-
 //----------------------------------------------------------------
 //---------------------------------------- Insert Node To The Tree
-
-Node* insert(Node* Root,char* key,float value)
-{
-    Node *n=search(Root,key);
+Node* insert(Node* Root,char* key,float value){
 
     if(Root==NULL)
         return newNode(key,value);
-    else if(n)
+
+    Node *n=search(Root,key);
+
+    if(n)
         n->value=value;
     else if(strcasecmp(key,Root->name) > 0)
         Root->right=insert(Root->right, key,value);
@@ -36,7 +34,6 @@ Node* insert(Node* Root,char* key,float value)
         Root->left=insert(Root->left, key,value);
     return Root;
 }
-
 
 //----------------------------------------------------------------
 //---------------------------------------- Search Through The tree
@@ -68,6 +65,7 @@ void inOrder(Node* root)
         inOrder((Node *) root->right);
     }
 }
+
 int count(Node* root)
 {
     if(root==NULL)
@@ -78,11 +76,13 @@ int count(Node* root)
 }
 
 //----------------------------------------------------------------
-//----------------------------------------------
+//-----------------------------------------Copy the tree into heap
 void fromTreeToHeap(Node * root,variable heap[])
 {
     if(root)
     {
+        static int heapIndex=0;
+
         fromTreeToHeap((Node *) root->left,heap);
 
         heap[heapIndex].value=root->value;
@@ -97,8 +97,3 @@ void fromTreeToHeap(Node * root,variable heap[])
     }
 
 }
-
-
-
-
-

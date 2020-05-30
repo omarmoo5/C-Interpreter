@@ -5,8 +5,8 @@
 unsigned long lineNUM;
 void COLOR(int color);
 void ERROR(char *c, ...);
+//Verbose function used in debugging and tracing the flow in the stack.
 void VERBOSE(char *c, ...);
-long countFileLines(FILE* f);
 char* removeSpaces(char* str);
 
 #endif //INTERPRETER_HELPERS_H

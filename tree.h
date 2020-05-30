@@ -23,24 +23,24 @@ Node* newNode(char* word,float);
 //----------------------------- Insert Node To The Tree
 Node* insert(Node* Root,char* key,float);
 
-
 //-----------------------------------------------------
 //----------------------------- Search Through The tree
 Node* search(Node* root, char* key);
 
 
 //-----------------------------------------------------
-//----------------------------------- Inorder Traversal
+//----------------------------------- InOrder Traversal
 void inOrder(Node* root);
 
 
 //-----------------------------------------------------
-//----------------------------------- Num of tree elements
+//-------------------------------- Num of tree elements
 int count(Node* root);
 
 
 //-----------------------------------------------------
-//-----------------------------------from tree to heap
+//------------------------------------from tree to heap
 void fromTreeToHeap(Node * root,variable heap[]);
+
 
 #endif //INTERPRETER_TREE_H

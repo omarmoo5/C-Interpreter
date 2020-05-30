@@ -70,20 +70,6 @@ void VERBOSE(char *c, ...)
     printf("\n");
 }
 
-long countFileLines(FILE* f){
-    long lines=0;
-    char c = (char)fgetc(f);
-
-    while (!feof(f))
-    {
-        if (c == '\n')
-            lines++;
-        c=(char)getc(f);
-    }
-    rewind(f);
-    return ++lines;
-}
-
 char* removeSpaces(char* str){
     int count = 0;
     for(int i = 0;str[i];i++){
