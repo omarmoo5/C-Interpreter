@@ -42,9 +42,9 @@ void ERROR(char *c, ...)
 void VERBOSE(char *c, ...)
 {
     if (!Verbose) return;
-    COLOR(-2);
+    //COLOR(-2);
     fprintf(stdout, "VERBOSE>> ");
-    COLOR(3);
+    //COLOR(3);
     va_list lst;
     va_start(lst, c);
     while (*c != '\0') {
@@ -66,7 +66,7 @@ void VERBOSE(char *c, ...)
         }
         c++;
     }
-    COLOR(0);
+    //COLOR(0);
     printf("\n");
 }
 

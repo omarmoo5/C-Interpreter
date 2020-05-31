@@ -2,8 +2,6 @@
 #include <string.h>
 #include "helpers.h"
 #include "stack.h"
-#include "tree.h"
-#include "heaps.h"
 
 //Global tree root
 Node* ROOT=NULL;
@@ -58,15 +56,15 @@ void runFile(char *filename)
         put(LHS,value);
 
         printf("Line#%ld:\tLHS[%s]=RHS[%s]\n",lineNUM++ + 1,LHS,RHS);
-//        COLOR(4);
+        //COLOR(4);
         printf("%s=%.2f\n",LHS,value);
-//        COLOR(0);
+        //COLOR(0);
     }
 
     puts("------------------------");
-//    COLOR(-5);
+    //COLOR(-5);
     puts("Order BY Variable Name: ");
-//    COLOR(0);
+    //COLOR(0);
     inOrder(ROOT);
 
     variable heap[count(ROOT)];
@@ -74,9 +72,9 @@ void runFile(char *filename)
 
     puts("------------------------");
     heapSort(count(ROOT), heap);
-//    COLOR(-5);
+    //COLOR(-5);
     puts("Order BY Variable Value:");
-//    COLOR(0);
+    //COLOR(0);
     printArray(heap,count(ROOT));
 
 }
