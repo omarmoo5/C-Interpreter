@@ -220,15 +220,16 @@ char* format(char *expression)
 
 char * infixToPost(char *infix)
 {
-    char *postfix=malloc(strlen(infix)+1);
     int i = 0;
     stack *s = initialize();
     VERBOSE("[infixToPost] Stack Initialized");
 
     //Initiate:
     VERBOSE("[infixToPost] infix \"%s\" ",infix);
-    
+
+    char *postfix=malloc(strlen(infix)+1);
     strcpy(postfix,"");
+
     char *token=strtok(infix," ");
 
     //Loop Through The String To Extract All The Other Tokens
@@ -298,6 +299,7 @@ char * infixToPost(char *infix)
     VERBOSE("[infixToPost] Stack is Empty");
     free(s);
     VERBOSE("[infixToPost] Stack Freed");
+    VERBOSE("[infixToPost] Postfix: %s",postfix);
     return postfix;
 }
 
