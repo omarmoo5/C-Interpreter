@@ -267,7 +267,7 @@ char * infixToPost(char *infix)
             {
                 VERBOSE("[infixToPost %d] [%c] precedence %d < %d | isEmpty %d ",
                          i++,myItem.cData, precedence(myItem.cData), precedence(peek(s).cData),isEmpty(s));
-                while(precedence(token[0])<precedence(peek(s).cData) && !isEmpty(s))
+                while(precedence(token[0])<=precedence(peek(s).cData) && !isEmpty(s))
                 {
                     op[0] = pop(s).cData;
                     strcat(postfix,op);
