@@ -1,7 +1,7 @@
 #ifndef INTERPRETER_HELPERS_H
 #define INTERPRETER_HELPERS_H
 
-#define Verbose 1
+#define Verbose 0
 unsigned long lineNUM;
 
 //----------------------------------
